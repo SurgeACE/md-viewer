@@ -1,0 +1,195 @@
+/* ============================================
+   MDView — Animations
+   Subtle, purposeful motion throughout
+   ============================================ */
+
+/* ── Keyframes ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes typing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ── Animation classes ── */
+.anim-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out) both;
+}
+
+.anim-fade-in-up {
+  animation: fadeInUp 0.5s var(--ease-out) both;
+}
+
+.anim-fade-in-down {
+  animation: fadeInDown 0.4s var(--ease-out) both;
+}
+
+.anim-slide-in-right {
+  animation: slideInRight 0.5s var(--ease-out) both;
+}
+
+.anim-slide-in-left {
+  animation: slideInLeft 0.5s var(--ease-out) both;
+}
+
+.anim-scale-in {
+  animation: scaleIn 0.4s var(--ease-spring) both;
+}
+
+.anim-bounce-in {
+  animation: bounceIn 0.6s var(--ease-spring) both;
+}
+
+/* Stagger delays */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+
+/* ── Screen transitions ── */
+.screen-enter {
+  animation: fadeInUp 0.45s var(--ease-out) both;
+}
+
+.screen-exit {
+  animation: fadeIn 0.2s var(--ease-out) reverse both;
+}
+
+/* ── Micro-interactions ── */
+.press-scale {
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+.press-scale:active {
+  transform: scale(0.95);
+}
+
+/* Floating action button ring - subtle */
+.fab-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  animation: pulse 2.5s var(--ease-out) infinite;
+}
+
+/* Skeleton loading shimmer */
+.skeleton {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+/* Accent text (replaces gradient-text) */
+.accent-text {
+  color: var(--accent);
+}
+
+/* Theme switch morph */
+.theme-transition * {
+  transition: background-color 0.4s var(--ease-out),
+              color 0.4s var(--ease-out),
+              border-color 0.4s var(--ease-out),
+              box-shadow 0.4s var(--ease-out) !important;
+}
+
+/* Ripple effect */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-soft);
+  border-radius: 50%;
+  transform: scale(0);
+  pointer-events: none;
+}
+.ripple:active::after {
+  animation: ripple 0.6s var(--ease-out);
+}
+
+/* Cursor blink for editor */
+.cursor-blink {
+  animation: typing 1s step-end infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
