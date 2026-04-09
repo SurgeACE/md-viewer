@@ -1,0 +1,10 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+whl/
+.agents/
+.claude/
+dom_dump.txt
+npm_install.log
+*.png

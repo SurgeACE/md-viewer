@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>.md viewer</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- NUCLEAR CACHE CLEAR: unregister old SWs + purge caches BEFORE anything loads -->
+  <script>
+    (function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          regs.forEach(function(r) { r.unregister(); });
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(keys) {
+          keys.forEach(function(k) { caches.delete(k); });
+        });
+      }
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Code highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" id="hljs-theme">
+
+  <!-- App styles (cache-bust via ?v=4) -->
+  <link rel="stylesheet" href="css/theme.css?v=4">
+  <link rel="stylesheet" href="css/animations.css?v=4">
+  <link rel="stylesheet" href="css/profile.css?v=4">
+  <link rel="stylesheet" href="css/home.css?v=4">
+  <link rel="stylesheet" href="css/editor.css?v=4">
+  <link rel="stylesheet" href="css/tabs.css?v=4">
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- Libs -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <!-- App modules (cache-bust via ?v=4) -->
+  <script src="js/store.js?v=4"></script>
+  <script src="js/theme.js?v=4"></script>
+  <script src="js/markdown.js?v=4"></script>
+  <script src="js/tabs.js?v=4"></script>
+  <script src="js/screens/profile.js?v=4"></script>
+  <script src="js/screens/home.js?v=4"></script>
+  <script src="js/screens/editor.js?v=4"></script>
+  <script src="js/router.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
