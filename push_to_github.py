@@ -13,7 +13,7 @@ import urllib.error
 OWNER = "SurgeACE"
 REPO = "md-viewer"
 BRANCH = "main"
-COMMIT_MSG = "feat: file drawer sidebar, folder colors, drag-reorder, sticky toolbar"
+COMMIT_MSG = "chore: add debug APK to repo"
 
 # Corporate proxy
 PROXY = "http://proxy-dmz.intel.com:912"
