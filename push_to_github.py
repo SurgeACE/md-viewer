@@ -13,7 +13,7 @@ import urllib.error
 OWNER = "SurgeACE"
 REPO = "md-viewer"
 BRANCH = "main"
-COMMIT_MSG = "chore: add debug APK to repo"
+COMMIT_MSG = "backup: pre-AI refine feature"
 
 # Corporate proxy
 PROXY = "http://proxy-dmz.intel.com:912"
