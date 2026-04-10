@@ -118,3 +118,4 @@ with sync_playwright() as p:
         print("None!")
     
     browser.close()
+    print("\n=== TEST COMPLETE ===")

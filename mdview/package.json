@@ -7,11 +7,20 @@
     "build": "vite build",
     "preview": "vite preview --host"
   },
-  "keywords": ["markdown", "editor", "preview"],
+  "keywords": [
+    "markdown",
+    "editor",
+    "preview"
+  ],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@capacitor/android": "^8.3.0",
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
     "dompurify": "^3.3.3",
     "highlight.js": "^11.11.1",
     "marked": "^18.0.0",

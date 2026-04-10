@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react'
 
 const TOOLBAR_ACTIONS = [
   { icon: 'H', label: 'Heading', prefix: '## ', suffix: '' },
@@ -8,14 +8,20 @@ const TOOLBAR_ACTIONS = [
   { icon: '<>', label: 'Code', prefix: '`', suffix: '`' },
   { icon: '[]', label: 'Link', prefix: '[', suffix: '](url)' },
   { icon: '""', label: 'Quote', prefix: '> ', suffix: '' },
-  { icon: '\u2014', label: 'Rule', prefix: '\n---\n', suffix: '' },
-  { icon: '\u2022', label: 'List', prefix: '- ', suffix: '' },
-  { icon: '\u2611', label: 'Task', prefix: '- [ ] ', suffix: '' },
-  { icon: '\u229e', label: 'Table', prefix: '\n| Column 1 | Column 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |\n', suffix: '' },
+  { icon: '—', label: 'Rule', prefix: '\n---\n', suffix: '' },
+  { icon: '•', label: 'List', prefix: '- ', suffix: '' },
+  { icon: '☑', label: 'Task', prefix: '- [ ] ', suffix: '' },
+  { icon: '⊞', label: 'Table', prefix: '\n| Column 1 | Column 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |\n', suffix: '' },
+  { icon: '```', label: 'Code Block', prefix: '\n```\n', suffix: '\n```\n' },
 ]
 
-export default function Editor({ content, onChange, isFullWidth }) {
+const Editor = forwardRef(function Editor({ content, onChange, isFullWidth, syncScroll, previewRef }, ref) {
   const textareaRef = useRef(null)
+  const isSyncing = useRef(false)
+
+  useImperativeHandle(ref, () => ({
+    getScrollElement: () => textareaRef.current
+  }))
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -58,6 +64,18 @@ export default function Editor({ content, onChange, isFullWidth }) {
     }
   }, [content, onChange])
 
+  const handleScroll = useCallback(() => {
+    if (!syncScroll || isSyncing.current) return
+    const ta = textareaRef.current
+    const preview = previewRef?.current?.getScrollElement?.()
+    if (!ta || !preview) return
+
+    isSyncing.current = true
+    const ratio = ta.scrollTop / (ta.scrollHeight - ta.clientHeight || 1)
+    preview.scrollTop = ratio * (preview.scrollHeight - preview.clientHeight)
+    requestAnimationFrame(() => { isSyncing.current = false })
+  }, [syncScroll, previewRef])
+
   return (
     <div className={`editor-pane ${isFullWidth ? 'full' : ''}`}>
       <div className="toolbar">
@@ -78,11 +96,15 @@ export default function Editor({ content, onChange, isFullWidth }) {
         value={content}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
+        onScroll={handleScroll}
         placeholder="Start writing Markdown..."
         spellCheck={false}
         autoCapitalize="off"
         autoComplete="off"
+        autoFocus={false}
       />
     </div>
   )
-}
+})
+
+export default Editor
