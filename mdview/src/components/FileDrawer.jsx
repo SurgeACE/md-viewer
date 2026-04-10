@@ -5,7 +5,9 @@ export default function FileDrawer({
   files, folders = [], activeFileId,
   onSelect, onCreate, onRename, onDelete, onImport,
   onCreateFolder, onDeleteFolder, onMoveFile,
-  open, onClose
+  open, onClose,
+  aiSettingsOpen, onAiSettingsClose,
+  geminiApiKey, onGeminiApiKeyChange
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [creatingFolder, setCreatingFolder] = useState(false)
@@ -13,6 +15,8 @@ export default function FileDrawer({
   const [editingId, setEditingId] = useState(null)
   const [editName, setEditName] = useState('')
   const [expandedFolders, setExpandedFolders] = useState({})
+  const [showAiSettings, setShowAiSettings] = useState(false)
+  const [tempApiKey, setTempApiKey] = useState('')
   const folderInputRef = useRef(null)
 
   // Touch drag state
@@ -50,8 +54,17 @@ export default function FileDrawer({
       setSearchQuery('')
       setCreatingFolder(false)
       setEditingId(null)
+      setShowAiSettings(false)
     }
   }, [open])
+
+  // Open AI settings when triggered from AI panel
+  useEffect(() => {
+    if (aiSettingsOpen && open) {
+      setShowAiSettings(true)
+      setTempApiKey(geminiApiKey || '')
+    }
+  }, [aiSettingsOpen, open, geminiApiKey])
 
   // Rename
   const startRename = (file) => {
@@ -361,6 +374,60 @@ export default function FileDrawer({
                 {unfolderedFiles.map(f => renderFile(f))}
               </div>
             </>
+          )}
+        </div>
+
+        {/* AI Settings Section */}
+        <div className="ai-settings-section">
+          <button
+            className="ai-settings-toggle"
+            onClick={() => { setShowAiSettings(p => !p); setTempApiKey(geminiApiKey || '') }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '6px', width: '100%',
+              padding: '8px 0', background: 'none', border: 'none', color: 'var(--text-secondary)',
+              fontSize: '12px', fontWeight: 600, fontFamily: 'var(--font-sans)', cursor: 'pointer',
+              textTransform: 'uppercase', letterSpacing: '0.05em'
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 2L9 9l-7 1 5 5-1.5 7L12 18.5 18.5 22 17 15l5-5-7-1z" />
+            </svg>
+            AI Settings
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+              style={{ marginLeft: 'auto', transform: showAiSettings ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 200ms' }}>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          {showAiSettings && (
+            <div style={{ paddingTop: '4px' }}>
+              <div className="ai-key-input-wrap">
+                <input
+                  type="password"
+                  className="ai-key-input"
+                  value={tempApiKey}
+                  onChange={(e) => setTempApiKey(e.target.value)}
+                  placeholder="Gemini API key..."
+                />
+                <button
+                  className="ai-key-save-btn"
+                  onClick={() => {
+                    onGeminiApiKeyChange(tempApiKey)
+                    if (onAiSettingsClose) onAiSettingsClose()
+                    setShowAiSettings(false)
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+              <div className="ai-key-hint">
+                Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a>
+              </div>
+              {geminiApiKey && (
+                <div style={{ marginTop: '6px', fontSize: '11px', color: '#4ade80' }}>
+                  ✓ Key configured
+                </div>
+              )}
+            </div>
           )}
         </div>
 

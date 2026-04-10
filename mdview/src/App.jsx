@@ -4,6 +4,7 @@ import Editor from './components/Editor'
 import Preview from './components/Preview'
 import FileDrawer from './components/FileDrawer'
 import StatsBar from './components/StatsBar'
+import AIRefinePanel from './components/AIRefinePanel'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { renderMarkdown } from './utils/markdown'
 import { DEFAULT_CONTENT } from './utils/defaults'
@@ -26,6 +27,9 @@ export default function App() {
   const [syncScroll, setSyncScroll] = useLocalStorage('mdview_sync_scroll', true)
   const [toast, setToast] = useState(null)
   const [splitMenuOpen, setSplitMenuOpen] = useState(false)
+  const [aiPanelOpen, setAiPanelOpen] = useState(false)
+  const [geminiApiKey, setGeminiApiKey] = useLocalStorage('mdview_gemini_key', '')
+  const [aiSettingsOpen, setAiSettingsOpen] = useState(false)
   const editorRef = useRef(null)
   const previewRef = useRef(null)
   const splitLongPressTimer = useRef(null)
@@ -261,6 +265,7 @@ h1,h2{border-bottom:1px solid #eee;padding-bottom:6px}</style></head>
         syncScroll={syncScroll}
         theme={theme}
         fileName={activeFile?.name || 'Untitled.md'}
+        onAiRefine={() => setAiPanelOpen(true)}
       />
 
       <main className={`workspace ${viewMode === 'split' && splitOrientation === 'vertical' ? 'vertical' : ''}`}>
@@ -276,6 +281,7 @@ h1,h2{border-bottom:1px solid #eee;padding-bottom:6px}</style></head>
               isFullWidth={viewMode === 'editor'}
               syncScroll={syncScroll}
               previewRef={previewRef}
+              onAiRefine={() => setAiPanelOpen(true)}
             />
           </div>
         )}
@@ -325,6 +331,15 @@ h1,h2{border-bottom:1px solid #eee;padding-bottom:6px}</style></head>
       </main>
 
       <StatsBar content={activeFile?.content || ''} />
+
+      <AIRefinePanel
+        open={aiPanelOpen}
+        onClose={() => setAiPanelOpen(false)}
+        content={activeFile?.content || ''}
+        onApply={(refined) => updateContent(refined)}
+        apiKey={geminiApiKey}
+        onOpenSettings={() => { setAiPanelOpen(false); setAiSettingsOpen(true); setDrawerOpen(true) }}
+      />
 
       {/* Mobile bottom nav with iOS-style sliding indicator */}
       <nav className="mobile-nav">
@@ -413,6 +428,10 @@ h1,h2{border-bottom:1px solid #eee;padding-bottom:6px}</style></head>
         onCreateFolder={createFolder}
         onDeleteFolder={deleteFolder}
         onMoveFile={moveFile}
+        aiSettingsOpen={aiSettingsOpen}
+        onAiSettingsClose={() => setAiSettingsOpen(false)}
+        geminiApiKey={geminiApiKey}
+        onGeminiApiKeyChange={setGeminiApiKey}
       />
 
       {toast && <div className="toast">{toast}</div>}

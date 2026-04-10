@@ -5,7 +5,7 @@ export default function Header({
   onImport, onExport, onCopy, onShare,
   onThemeToggle, onSyncToggle, syncScroll,
   splitOrientation, onSplitOrientationChange,
-  theme, fileName
+  theme, fileName, onAiRefine
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [exportOpen, setExportOpen] = useState(false)
@@ -115,6 +115,10 @@ export default function Header({
               <button onClick={() => { onCopy(); setMenuOpen(false) }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 Copy
+              </button>
+              <button onClick={() => { onAiRefine(); setMenuOpen(false) }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L9 9l-7 1 5 5-1.5 7L12 18.5 18.5 22 17 15l5-5-7-1z"/></svg>
+                AI Refine
               </button>
               {navigator.share && (
                 <button onClick={() => { onShare(); setMenuOpen(false) }}>

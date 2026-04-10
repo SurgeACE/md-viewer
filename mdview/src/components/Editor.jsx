@@ -15,7 +15,7 @@ const TOOLBAR_ACTIONS = [
   { icon: '```', label: 'Code Block', prefix: '\n```\n', suffix: '\n```\n' },
 ]
 
-const Editor = forwardRef(function Editor({ content, onChange, isFullWidth, syncScroll, previewRef }, ref) {
+const Editor = forwardRef(function Editor({ content, onChange, isFullWidth, syncScroll, previewRef, onAiRefine }, ref) {
   const textareaRef = useRef(null)
   const isSyncing = useRef(false)
 
@@ -89,6 +89,14 @@ const Editor = forwardRef(function Editor({ content, onChange, isFullWidth, sync
             {action.icon}
           </button>
         ))}
+        <div className="toolbar-divider" />
+        <button
+          className="toolbar-btn ai-btn"
+          onClick={onAiRefine}
+          title="AI Refine"
+        >
+          ✦ AI
+        </button>
       </div>
       <textarea
         ref={textareaRef}

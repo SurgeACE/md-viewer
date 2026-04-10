@@ -13,7 +13,7 @@ import urllib.error
 OWNER = "SurgeACE"
 REPO = "md-viewer"
 BRANCH = "main"
-COMMIT_MSG = "backup: pre-AI refine feature"
+COMMIT_MSG = "feat: AI Refine - Gemini-powered markdown refinement for prompts"
 
 # Corporate proxy
 PROXY = "http://proxy-dmz.intel.com:912"
@@ -55,7 +55,7 @@ def api_request(url, method="GET", data=None, token=None):
     
     req = urllib.request.Request(url, data=body, headers=headers, method=method)
     try:
-        with opener.open(req, timeout=30) as resp:
+        with opener.open(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8") if e.fp else ""
